@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,5 +58,16 @@ public class RedisController extends BaseController {
         return resultBean;
     }
 
+
+    @GetMapping("/publish/{message}")
+    public ResultBean publish(@PathVariable String message) {
+        redisTemplate.convertAndSend("orange",message);
+        ResultBean resultBean =new ResultBean();
+        Map map=new HashMap();
+        resultBean.setCode(ResultCode.SUCCESS.code);
+        resultBean.setDesc(ResultCode.SUCCESS.desc);
+        resultBean.setData("publish", message);
+        return resultBean;
+    }
 
 }
